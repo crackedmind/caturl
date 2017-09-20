@@ -6,24 +6,33 @@ class UrlCreator
   end
 
   def call
-    short_url = UrlGenerator.()
-    url = ShortUrl.new(url: original_url, short_url: short_url)
-    v = ShortUrlValidator.new(url)
+    result = { }
+    begin
+      url = ShortUrl.where(url: original_url).first
+      unless url
+        short_url = UrlGenerator.()
+        url = ShortUrl.new(url: original_url, short_url: short_url)
+        v = ShortUrlValidator.new(url)
 
-    if v.valid?
-      if url.save
-        {
-          result: true,
-          data: url,
-          http_code: :created
-        }
+        if v.valid? && url.save
+          make_result(true, url, :created)
+        else
+          make_result(false, url, :not_acceptable)
+        end
+      else
+        make_result(true, url, :created)
       end
-    else
-      {
-        result: false,
-        data: {error_messages: v.errors.full_messages},
-        http_code: :not_acceptable
-      }
+
     end
+  rescue ActiveRecord::RecordNotUnique => not_unique
+    retry
+  end
+
+  def make_result(result, data, http_code)
+    {
+      result: result,
+      data: data,
+      http_code: http_code
+    }
   end
 end
