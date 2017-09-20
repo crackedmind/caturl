@@ -6,5 +6,11 @@
 //
 // To reference this file, add <%= javascript_pack_tag 'application' %> to the appropriate
 // layout file, like app/views/layouts/application.html.erb
+import React from 'react'
+import ReactDOM from 'react-dom'
+import 'bootstrap/dist/css/bootstrap.css'
+import './styles.sass'
+import App from './app'
 
-console.log('Hello World from Webpacker')
+console.log(document.getElementById('root'))
+ReactDOM.render(<App />, document.getElementById('root'))
