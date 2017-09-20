@@ -17,7 +17,7 @@ class UrlCreator
         if v.valid? && url.save
           make_result(true, url, :created)
         else
-          make_result(false, url, :not_acceptable)
+          make_result(false, {error_messages: v.errors.full_messages}, :not_acceptable)
         end
       else
         make_result(true, url, :created)
