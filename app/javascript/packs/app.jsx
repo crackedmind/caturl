@@ -16,7 +16,6 @@ class Results extends React.Component {
     }
   }
   copy() {
-    console.log('copied')
     this.setState({copied: true})
     setTimeout(() => {
       this.setState({copied: false})
@@ -75,7 +74,7 @@ export default class App extends React.Component {
         })
       } else if (res.status === 406) {
         res.json().then((data) => {
-          this.setState({errors: data, errors_visible: true})
+          this.setState({errors: data['error_messages'], errors_visible: true})
         })
       }
     })
@@ -89,7 +88,11 @@ export default class App extends React.Component {
     return <div className="container">
 
       <Alert isOpen={this.state.errors_visible} toggle={this.onDismiss.bind(this)} color="danger">
-some
+        {
+          this.state.errors ? this.state.errors.map((e) => {
+            return <p>{e}</p>
+          }) : ''
+        }
       </Alert>
       <div className="row justify-content-center">
 
