@@ -70,7 +70,7 @@ export default class App extends React.Component {
     }).then(res => {
       if(res.status === 201) {
         res.json().then((data) => {
-          this.setState({results: data, show_result: true, errors: null})
+          this.setState({results: data, show_result: true, errors: null, errors_visible: false})
         })
       } else if (res.status === 406) {
         res.json().then((data) => {
